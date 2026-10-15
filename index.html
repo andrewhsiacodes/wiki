@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Wiki Speedrun</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.5rem;background:#f1e8d8;color:#3b3226;font-family:Georgia,'Times New Roman',serif;text-align:center;padding:1rem}
+h1{font-size:clamp(2.5rem,8vw,5rem);margin:0;font-weight:700;letter-spacing:-.02em}
+.words{display:flex;gap:1.5rem;flex-wrap:wrap;justify-content:center;min-height:5rem}
+.slot{min-width:11rem;padding:1rem 1.5rem;border:2px solid #3b3226;border-radius:12px;background:#f8f2e6;font-size:clamp(1.4rem,5vw,2.2rem);font-weight:600;overflow:hidden}
+.slot.spin{opacity:.7}
+button{font:inherit;font-size:1.2rem;padding:.8rem 2.2rem;border:2px solid #3b3226;border-radius:999px;background:#3b3226;color:#f1e8d8;cursor:pointer;transition:transform .1s}
+button:hover{transform:scale(1.04)}button:disabled{opacity:.5;cursor:default;transform:none}
+</style></head><body>
+<h1>wiki speedrun</h1>
+<div class="words" id="words" hidden><div class="slot" id="a"></div><div class="slot" id="b"></div></div>
+<button id="go">Generate</button>
+<script>
+const W=["apple", "anchor", "volcano", "violin", "glacier", "whisper", "tractor", "lantern", "pickle", "comet", "saddle", "marble", "cactus", "harbor", "ticket", "mirror", "thunder", "pencil", "walrus", "meadow", "engine", "blanket", "falcon", "cinnamon", "bridge", "puzzle", "ribbon", "desert", "trumpet", "pillow", "orbit", "lemon", "fossil", "jungle", "zipper", "compass", "tulip", "anvil", "bagpipe", "candle", "dolphin", "eclipse", "feather", "giraffe", "helmet", "igloo", "jigsaw", "kettle", "lighthouse", "mango", "nebula", "octopus", "parachute", "quartz", "rainbow", "sandwich", "telescope", "umbrella", "velvet", "waffle", "xylophone", "yogurt", "zebra", "accordion", "balloon", "canyon", "dragon", "elevator", "fountain", "galaxy", "hammock", "island", "jellyfish", "kangaroo", "ladder", "mushroom", "noodle", "oasis", "penguin", "quilt", "robot", "submarine", "tornado", "unicorn", "vampire", "windmill", "yacht", "zeppelin", "avalanche", "biscuit", "castle", "diamond", "emerald", "flamingo", "gargoyle", "hurricane", "iceberg", "juggler", "koala", "lagoon", "monsoon", "nutmeg", "obelisk", "pyramid", "quicksand", "raccoon", "scarecrow", "tambourine", "umpire", "vineyard", "wizard", "yeti", "zucchini"];
+const pick=()=>W[Math.floor(Math.random()*W.length)];
+const go=document.getElementById('go'),box=document.getElementById('words'),a=document.getElementById('a'),b=document.getElementById('b');
+function spin(el,ms){return new Promise(res=>{el.classList.add('spin');const t=setInterval(()=>{el.textContent=pick()},70);setTimeout(()=>{clearInterval(t);el.classList.remove('spin');res()},ms)})}
+go.onclick=async()=>{go.disabled=true;box.hidden=false;
+const x=pick();let y=pick();while(y===x)y=pick();
+const pa=spin(a,1200).then(()=>a.textContent=x);
+const pb=spin(b,2000).then(()=>b.textContent=y);
+await Promise.all([pa,pb]);go.textContent='Generate again';go.disabled=false};
+</script></body></html>
